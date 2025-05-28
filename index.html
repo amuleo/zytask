@@ -8,7 +8,6 @@
   <meta name="description" content="زای تسک: اولین پلتفرم مدیریت وظایف گیمیفای شده در ایران. با گیمیفیکیشن، بهره‌وری خود را افزایش دهید، وظایف را سازماندهی کنید، امتیاز کسب کنید و به سطوح بالاتر برسید. با دسترسی آفلاین کامل و رابط کاربری مینیمال. Zytask.ir برای مدیریت هوشمند وظایف و افزایش انگیزه.">
   <meta name="keywords" content="زای تسک, zytask, zytask ir, مدیریت وظایف, گیمیفیکیشن, گیم فیکیشن, گیم‌فیکیشن, گیمیفای, بهره‌وری, سازماندهی وظایف, برنامه ریزی, افزایش انگیزه, اپلیکیشن مدیریت وظایف, نرم افزار گیمیفای شده, برنامه ریزی شخصی, ابزار بهره وری, آفلاین تسک منیجر, اولین گیمیفیکیشن ایران, مدیریت پروژه شخصی">
   <meta name="robots" content="index, follow">
-
   <link rel="canonical" href="https://www.zytask.ir/">
   <meta property="og:title" content="زای تسک | پلتفرم مدیریت وظایف گیمیفای شده | اولین در ایران">
   <meta property="og:description" content="زای تسک: اولین پلتفرم مدیریت وظایف گیمیفای شده در ایران. با گیمیفیکیشن، بهره‌وری خود را افزایش دهید، وظایف را سازماندهی کنید، امتیاز کسب کنید و به سطوح بالاتر برسید.">
@@ -61,12 +60,22 @@
     
     /* بهبود واکنش‌گرا برای هدر موبایل */
     @media (max-width: 640px) {
-      .header-initial {
-        padding: 1rem;
+      /* کاهش اندازه عنوان در موبایل */
+      h1.flex {
+          font-size: 1.5rem; /* تقریباً معادل text-2xl */
       }
+      /* کاهش اندازه آیکون عنوان */
+      .header-title-icon-wrapper i {
+          font-size: 1.25rem;
+      }
+      /* بهبود اندازه دکمه ورود به برنامه */
       .header-entry-btn {
-        font-size: 1.125rem;
-        padding: 0.75rem 1.5rem;
+          font-size: 0.875rem; /* text-sm */
+          padding: 0.5rem 1rem;
+      }
+      /* کاهش padding هدر */
+      .header-initial {
+          padding: 0.75rem 1rem;
       }
     }
     
@@ -307,6 +316,14 @@
       cursor: grabbing;
       cursor: -webkit-grabbing;
     }
+    
+    /* جلوگیری از سلکت شدن متون آیتم‌های اسلایدر */
+    .scroll-snap-x, .scroll-snap-x * {
+      -webkit-user-select: none; /* Safari */
+      -moz-user-select: none;    /* Firefox */
+      -ms-user-select: none;     /* IE10+/Edge */
+      user-select: none;         /* Standard syntax */
+    }
   </style>
 </head>
 <body class="flex flex-col min-h-screen antialiased">
@@ -318,7 +335,7 @@
         </span>
         <span>زای تسک</span>
       </h1>
-      <!-- دکمه هدر به صورت پیش‌فرض به آدرس انکر "#entrySection" تنظیم شده است -->
+      <!-- دکمه هدر به آدرس انکر "#entrySection" -->
       <div id="headerButtonContainer" class="header-btn-container">
         <a href="#entrySection" class="header-entry-btn px-6 rounded-full text-lg font-semibold shadow-md">
           ورود به برنامه
@@ -500,7 +517,7 @@
       <p class="text-lg text-gray-700 mb-8 text-justify-custom">
         همین حالا به زای تسک بپیوندید و سفر خود را به سوی مدیریت بهتر زمان و افزایش انگیزه آغاز کنید. بدون نیاز به ثبت‌نام پیچیده، فقط با یک کلیک!
       </p>
-      <!-- این دکمه حالا وقتی کلیک می‌شود، کاربر را به صورت دستی به آدرس زیر دامنه هدایت می‌کند -->
+      <!-- دکمه ورود به برنامه زای تسک: با کلیک به صورت دستی کاربر به زیر دامنه هدایت می‌شود -->
       <a id="bottomEntryButton" href="#" class="btn-primary px-8 py-4 rounded-full text-xl font-bold shadow-lg">
         ورود به برنامه زای تسک
       </a>
@@ -521,10 +538,9 @@
   </button>
 
   <script>
-    /* تنظیم دکمه ورود به برنامه زای تسک (باکس پایین) به گونه‌ای که به صورت دستی کاربر را هدایت کند */
+    /* تنظیم دکمه ورود به برنامه زای تسک در پایین صفحه: با کلیک به صورت دستی به URL زیر دامنه هدایت می‌کند */
     document.addEventListener('DOMContentLoaded', () => {
       const currentHostname = window.location.hostname;
-      // اگر در محیط توسعه (localhost) هستید، لینک تستی استفاده می‌شود، در غیر این صورت زیر دامنه اصلی
       const appSubdomainUrl = currentHostname.includes('localhost')
         ? 'http://localhost:3000'
         : `https://app.${currentHostname}`;
@@ -533,7 +549,6 @@
 
       const bottomEntryButton = document.getElementById('bottomEntryButton');
       if (bottomEntryButton) {
-        // حذف تغییر خودکار href و به جای آن اضافه کردن event listener جهت هدایت دستی
         bottomEntryButton.addEventListener('click', function(e) {
           e.preventDefault();
           window.location.href = appSubdomainUrl;
@@ -574,11 +589,10 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 
-    /* اسکرول نرم برای لینک‌هایی که href آن‌ها با "#" شروع می‌شود */
+    /* اسکرول نرم برای لینک‌هایی که href آنها با "#" شروع می‌شود */
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       anchor.addEventListener('click', function(e) {
         const href = this.getAttribute('href');
-        // اگر href از "#" شروع نمی‌شود، به لینک مقصد اجازه داده شود که پیش‌فرض اجرا شود.
         if (!href.startsWith('#')) return;
         e.preventDefault();
         const target = document.querySelector(href);
@@ -587,8 +601,8 @@
         }
       });
     });
-
-    /* افزودن قابلیت کشیدن اسلایدر با موس (هم برای موس و هم لمس) */
+    
+    /* افزودن قابلیت کشیدن اسلایدر با موس (هم برای موس و لمس) */
     const sliderContainer = document.querySelector('.scroll-snap-x');
     if (sliderContainer) {
       let isDown = false;
@@ -616,7 +630,7 @@
         if (!isDown) return;
         e.preventDefault();
         const x = e.pageX - sliderContainer.offsetLeft;
-        const walk = (x - startX) * 2; // تنظیم سرعت در صورت نیاز
+        const walk = (x - startX) * 2;
         sliderContainer.scrollLeft = scrollLeft - walk;
       });
     }
