@@ -500,7 +500,7 @@
       <p class="text-lg text-gray-700 mb-8 text-justify-custom">
         همین حالا به زای تسک بپیوندید و سفر خود را به سوی مدیریت بهتر زمان و افزایش انگیزه آغاز کنید. بدون نیاز به ثبت‌نام پیچیده، فقط با یک کلیک!
       </p>
-      <!-- این دکمه کاربر را به زیر دامنه‌ی app هدایت می‌کند -->
+      <!-- این دکمه حالا وقتی کلیک می‌شود، کاربر را به صورت دستی به آدرس زیر دامنه هدایت می‌کند -->
       <a id="bottomEntryButton" href="#" class="btn-primary px-8 py-4 rounded-full text-xl font-bold shadow-lg">
         ورود به برنامه زای تسک
       </a>
@@ -521,11 +521,11 @@
   </button>
 
   <script>
-    /* دکمه ورود به برنامه در پایین صفحه به صورت داینامیک به زیر دامنه‌ی app ارجاع می‌دهد */
+    /* تنظیم دکمه ورود به برنامه زای تسک (باکس پایین) به گونه‌ای که به صورت دستی کاربر را هدایت کند */
     document.addEventListener('DOMContentLoaded', () => {
       const currentHostname = window.location.hostname;
-      // در محیط توسعه (localhost) لینک تستی تنظیم می‌شود
-      let appSubdomainUrl = currentHostname.includes('localhost')
+      // اگر در محیط توسعه (localhost) هستید، لینک تستی استفاده می‌شود، در غیر این صورت زیر دامنه اصلی
+      const appSubdomainUrl = currentHostname.includes('localhost')
         ? 'http://localhost:3000'
         : `https://app.${currentHostname}`;
 
@@ -533,8 +533,12 @@
 
       const bottomEntryButton = document.getElementById('bottomEntryButton');
       if (bottomEntryButton) {
-        bottomEntryButton.href = appSubdomainUrl;
-        console.log('Bottom entry button URL set to:', bottomEntryButton.href);
+        // حذف تغییر خودکار href و به جای آن اضافه کردن event listener جهت هدایت دستی
+        bottomEntryButton.addEventListener('click', function(e) {
+          e.preventDefault();
+          window.location.href = appSubdomainUrl;
+        });
+        console.log('Bottom entry button event set for manual redirection.');
       } else {
         console.error('Bottom entry button not found!');
       }
@@ -570,11 +574,14 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 
-    /* اسکرول نرم برای لینک‌های انکر (فقط روی عناصری که href آنها با "#" شروع می‌شود) */
+    /* اسکرول نرم برای لینک‌هایی که href آن‌ها با "#" شروع می‌شود */
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function (e) {
+      anchor.addEventListener('click', function(e) {
+        const href = this.getAttribute('href');
+        // اگر href از "#" شروع نمی‌شود، به لینک مقصد اجازه داده شود که پیش‌فرض اجرا شود.
+        if (!href.startsWith('#')) return;
         e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
+        const target = document.querySelector(href);
         if (target) {
           target.scrollIntoView({ behavior: 'smooth' });
         }
