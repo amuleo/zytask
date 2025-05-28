@@ -59,7 +59,7 @@
       transform: scale(1.05);
     }
     
-    /* بهبود واکنش‌گرا (responsive) برای هدر موبایل */
+    /* بهبود واکنش‌گرا برای هدر موبایل */
     @media (max-width: 640px) {
       .header-initial {
         padding: 1rem;
@@ -69,7 +69,7 @@
         padding: 0.75rem 1.5rem;
       }
     }
-
+    
     /* استایل توجیه متن */
     .text-justify-custom {
       text-align: justify;
@@ -415,7 +415,7 @@
       </div>
     </section>
 
-    <!-- بخش roadmap برای موبایل (md:hidden) -->
+    <!-- بخش roadmap برای موبایل -->
     <section class="mb-16 md:hidden">
       <h3 class="text-2xl sm:text-3xl font-bold text-center mb-10">چگونه با زای تسک شروع کنیم؟</h3>
       <div class="roadmap-container">
@@ -454,7 +454,7 @@
       </div>
     </section>
 
-    <!-- بخش roadmap برای دسکتاپ (hidden on md down) -->
+    <!-- بخش roadmap برای دسکتاپ -->
     <section class="mb-16 hidden md:block">
       <h3 class="text-2xl sm:text-3xl font-bold text-center mb-10">چگونه با زای تسک شروع کنیم؟</h3>
       <div class="roadmap-container">
@@ -518,23 +518,34 @@
   </button>
 
   <script>
-    /* دکمه‌های ورود به برنامه: داینامیک کردن لینک در هدر و پایین صفحه */
-    window.addEventListener('DOMContentLoaded', () => {
+    /* به‌روزرسانی دکمه‌های ورود به برنامه به صورت داینامیک */
+    document.addEventListener('DOMContentLoaded', () => {
       const currentHostname = window.location.hostname;
-      const appSubdomainUrl = `https://app.${currentHostname}`;
+      // در محیط توسعه (localhost) لینک داینامیک را به یک پورت مشخص تغییر دهید
+      let appSubdomainUrl = currentHostname.includes('localhost')
+        ? 'http://localhost:3000'
+        : `https://app.${currentHostname}`;
 
-      const bottomEntryButton = document.getElementById('bottomEntryButton');
-      if (bottomEntryButton) {
-        bottomEntryButton.href = appSubdomainUrl;
-      }
+      console.log("Dynamic App URL:", appSubdomainUrl);
 
       const headerEntryButton = document.querySelector('.header-entry-btn');
       if (headerEntryButton) {
         headerEntryButton.href = appSubdomainUrl;
+        console.log('Header entry button URL set to:', headerEntryButton.href);
+      } else {
+        console.error('Header entry button not found!');
+      }
+
+      const bottomEntryButton = document.getElementById('bottomEntryButton');
+      if (bottomEntryButton) {
+        bottomEntryButton.href = appSubdomainUrl;
+        console.log('Bottom entry button URL set to:', bottomEntryButton.href);
+      } else {
+        console.error('Bottom entry button not found!');
       }
     });
 
-    /* مدیریت رویدادهای اسکرول: تغییر هدر و نمایش دکمه اسکرول به بالا */
+    /* مدیریت اسکرول برای تغییر هدر و نمایش دکمه "برو به بالا" */
     const mainHeader = document.getElementById('mainHeader');
     const headerButtonContainer = document.getElementById('headerButtonContainer');
     const scrollToTopBtn = document.getElementById('scrollToTopBtn');
@@ -572,7 +583,7 @@
       });
     });
 
-    /* افزودن قابلیت کشیدن اسلایدر با موس (به علاوه عملکرد لمس در موبایل) */
+    /* افزودن قابلیت کشیدن اسلایدر با موس (هم برای موس و هم لمس) */
     const sliderContainer = document.querySelector('.scroll-snap-x');
     if (sliderContainer) {
       let isDown = false;
@@ -600,12 +611,12 @@
         if (!isDown) return;
         e.preventDefault();
         const x = e.pageX - sliderContainer.offsetLeft;
-        const walk = (x - startX) * 2; // تنظیم سرعت حرکت در صورت نیاز
+        const walk = (x - startX) * 2; // می‌توانید سرعت را تنظیم کنید
         sliderContainer.scrollLeft = scrollLeft - walk;
       });
     }
 
-    /* نمایش سال میلادی فعلی در فوتر */
+    /* به‌روزرسانی سال میلادی در فوتر */
     document.getElementById('currentYear').textContent = new Date().getFullYear();
   </script>
 </body>
