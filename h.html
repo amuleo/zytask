@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>هدر جدید با منوی کشویی</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@33.003/misc/Farsi-Digits/Vazirmatn-FD-font-face.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        body {
+            font-family: 'Vazirmatn FD', sans-serif;
+            direction: rtl;
+            background-color: #f3f4f6; /* Gray-100 */
+            display: flex;
+            flex-direction: column; /* To stack header and content */
+            align-items: center;
+            min-height: 100vh;
+            padding-top: 20px; /* Some top padding for overall page */
+        }
+        .main-container {
+            width: 100%;
+            max-width: 600px; /* Max width for the main content area */
+            background-color: #ffffff;
+            border-radius: 0.75rem; /* rounded-xl */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* shadow-md */
+            overflow: hidden; /* To contain rounded corners */
+        }
+        /* Custom theme colors (for demonstration) */
+        .theme-yellow-bg { background-color: #fefcbf; } /* yellow-100 */
+        .theme-yellow-text { color: #8a6200; } /* yellow-800 */
+        .theme-blue-bg { background-color: #bfdbfe; } /* blue-200 */
+        .theme-blue-text { color: #1e40af; } /* blue-800 */
+        .theme-purple-bg { background-color: #e9d5ff; } /* purple-200 */
+        .theme-purple-text { color: #5b21b6; } /* purple-800 */
+        .theme-gray-bg { background-color: #e5e7eb; } /* gray-200 */
+        .theme-gray-text { color: #374151; } /* gray-700 */
+        .dark .theme-yellow-bg { background-color: #4b3d00; }
+        .dark .theme-yellow-text { color: #facc15; }
+        .dark .theme-blue-bg { background-color: #1e3a8a; }
+        .dark .theme-blue-text { color: #93c5fd; }
+        .dark .theme-purple-bg { background-color: #3f1d6d; }
+        .dark .theme-purple-text { color: #d8b4fe; }
+        .dark .theme-gray-bg { background-color: #374151; }
+        .dark .theme-gray-text { color: #d1d5db; }
+
+        /* Custom scrollbar for dropdown (if content overflows) */
+        .dropdown-scrollable::-webkit-scrollbar {
+            width: 8px;
+        }
+        .dropdown-scrollable::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        .dropdown-scrollable::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+        .dropdown-scrollable::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        .dark .dropdown-scrollable::-webkit-scrollbar-track {
+            background: #333;
+        }
+        .dark .dropdown-scrollable::-webkit-scrollbar-thumb {
+            background: #666;
+        }
+        .dark .dropdown-scrollable::-webkit-scrollbar-thumb:hover {
+            background: #999;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-container">
+        <header class="relative p-4 flex items-center justify-between bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-100 border-b border-gray-200 dark:border-gray-700">
+            <button id="menuBtn" class="p-2 rounded-full bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-400" aria-label="باز کردن منو">
+                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 100-2 1 1 0 000 2zm0 7a1 1 0 100-2 1 1 0 000 2zm0 7a1 1 0 100-2 1 1 0 000 2z"></path>
+                </svg>
+            </button>
+
+            <h1 class="text-3xl font-bold text-gray-800 dark:text-gray-100">زای تسک</h1>
+
+            <button id="themeToggleBtn" class="p-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100 transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-400" aria-label="تغییر تم">
+                <svg id="themeIcon" class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.325 6.675l-.707-.707M6.318 6.318l-.707-.707m12.728 0l-.707.707M6.318 17.682l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                </svg>
+            </button>
+        </header>
+
+        <div class="relative w-full">
+            <div id="pointsDropdownToggle" class="flex items-center justify-between w-full py-3 px-4 bg-yellow-500 dark:bg-yellow-700 text-white cursor-pointer transition-all duration-200 ease-in-out hover:bg-yellow-600 dark:hover:bg-yellow-800">
+                <div class="flex items-center">
+                    <i class="fa-solid fa-coins text-xl ml-2"></i>
+                    <span class="text-lg font-semibold">پوینت: <span id="zPoint">1234</span></span>
+                </div>
+                <i id="dropdownIndicator" class="fa-solid fa-chevron-down transition-transform duration-200"></i>
+            </div>
+
+            <div id="pointsDropdownContent" class="absolute top-full left-0 right-0 w-full bg-white dark:bg-gray-800 shadow-lg py-2 hidden z-10 transition-all duration-200 ease-in-out origin-top opacity-0 scale-y-95 transform dropdown-scrollable">
+                <div class="flex flex-col gap-2 p-2">
+                    <div class="flex items-center justify-between theme-blue-bg theme-blue-text px-4 py-2 rounded-lg">
+                        <div class="flex items-center">
+                            <i id="levelIcon" class="fa-solid fa-star text-xl ml-2"></i>
+                            <span class="text-base font-semibold">سطح:</span>
+                        </div>
+                        <span id="level" class="text-base font-semibold">5</span>
+                    </div>
+                    <div class="flex items-center justify-between theme-purple-bg theme-purple-text px-4 py-2 rounded-lg">
+                        <div class="flex items-center">
+                            <i class="fa-solid fa-fire text-xl ml-2"></i>
+                            <span class="text-base font-semibold">زنجیره:</span>
+                        </div>
+                        <span id="dailyStreak" class="text-base font-semibold">7 روز</span>
+                    </div>
+                    </div>
+            </div>
+        </div>
+
+        <div class="p-4 text-gray-700 dark:text-gray-300">
+            <h2 class="text-xl font-bold mb-2">محتوای اصلی برنامه</h2>
+            <p>اینجا محتوای اصلی برنامه شما قرار می‌گیرد. با کلیک بر روی "پوینت" در بالا، جزئیات سطح و زنجیره را مشاهده کنید.</p>
+            <p class="mt-4">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد. کتابهای زیادی در شصت و سه درصد گذشته، حال و آینده شناخت فراوان جامعه و متخصصان را می طلبد تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاق و فرهنگ پیشرو در زبان فارسی ایجاد کرد. در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها و شرایط سخت تایپ به پایان رسد و زمان مورد نیاز شامل حروفچینی دستاوردهای اصلی و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.</p>
+            <p class="mt-4">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد. کتابهای زیادی در شصت و سه درصد گذشته، حال و آینده شناخت فراوان جامعه و متخصصان را می طلبد تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاق و فرهنگ پیشرو در زبان فارسی ایجاد کرد. در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها و شرایط سخت تایپ به پایان رسد و زمان مورد نیاز شامل حروفچینی دستاوردهای اصلی و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.</p>
+        </div>
+    </div>
+
+    <script>
+        const themeToggleBtn = document.getElementById('themeToggleBtn');
+        const themeIcon = document.getElementById('themeIcon');
+        const pointsDropdownToggle = document.getElementById('pointsDropdownToggle');
+        const pointsDropdownContent = document.getElementById('pointsDropdownContent');
+        const levelSpan = document.getElementById('level');
+        const zPointSpan = document.getElementById('zPoint');
+        const dailyStreakSpan = document.getElementById('dailyStreak');
+        const dropdownIndicator = document.getElementById('dropdownIndicator');
+        const levelIcon = document.getElementById('levelIcon');
+
+        // Sample values (these would come from your global variables in the actual app)
+        let currentLevel = 5;
+        let currentStreak = 7;
+        let currentZPoint = 1234;
+
+        // Function to update the displayed values
+        function updateDisplay() {
+            levelSpan.textContent = currentLevel;
+            zPointSpan.textContent = currentZPoint;
+            dailyStreakSpan.textContent = `${currentStreak} روز`;
+            // You can update the level icon here based on currentLevel if you have a mapping
+            // For now, it's a static star icon
+        }
+
+        // Theme Toggle Logic (copied from your original code for completeness)
+        function applyTheme(theme) {
+            const htmlElement = document.documentElement;
+            if (theme === 'dark') {
+                htmlElement.classList.add('dark');
+                themeIcon.innerHTML = `<path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9 0 0012 21a9.003 9 0 008.354-5.646z"></path>`;
+            } else {
+                htmlElement.classList.remove('dark');
+                themeIcon.innerHTML = `<path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.325 6.675l-.707-.707M6.318 6.318l-.707-.707m12.728 0l-.707.707M6.318 17.682l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>`;
+            }
+        }
+
+        function initializeTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                applyTheme(savedTheme);
+            } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                applyTheme('dark');
+            } else {
+                applyTheme('light');
+            }
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+                applyTheme(e.matches ? 'dark' : 'light');
+            });
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+            const currentTheme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            localStorage.setItem('theme', newTheme);
+            applyTheme(newTheme);
+        });
+        // End Theme Toggle Logic
+
+        // Dropdown Toggle Logic
+        pointsDropdownToggle.addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevent click from bubbling up to window and closing immediately
+
+            const isHidden = pointsDropdownContent.classList.contains('hidden');
+
+            if (isHidden) {
+                pointsDropdownContent.classList.remove('hidden');
+                void pointsDropdownContent.offsetHeight; // Force reflow for animation
+                pointsDropdownContent.classList.remove('opacity-0', 'scale-y-95');
+                pointsDropdownContent.classList.add('opacity-100', 'scale-y-100');
+                dropdownIndicator.classList.add('rotate-180'); // Rotate arrow up
+            } else {
+                pointsDropdownContent.classList.remove('opacity-100', 'scale-y-100');
+                pointsDropdownContent.classList.add('opacity-0', 'scale-y-95');
+                dropdownIndicator.classList.remove('rotate-180'); // Rotate arrow down
+                pointsDropdownContent.addEventListener('transitionend', () => {
+                    pointsDropdownContent.classList.add('hidden');
+                }, { once: true });
+            }
+        });
+
+        // Close dropdown when clicking outside
+        window.addEventListener('click', (e) => {
+            if (!pointsDropdownToggle.contains(e.target) && !pointsDropdownContent.contains(e.target)) {
+                if (!pointsDropdownContent.classList.contains('hidden')) {
+                    pointsDropdownContent.classList.remove('opacity-100', 'scale-y-100');
+                    pointsDropdownContent.classList.add('opacity-0', 'scale-y-95');
+                    dropdownIndicator.classList.remove('rotate-180');
+                    pointsDropdownContent.addEventListener('transitionend', () => {
+                        pointsDropdownContent.classList.add('hidden');
+                    }, { once: true });
+                }
+            }
+        });
+
+        // Initialize on load
+        window.onload = () => {
+            initializeTheme(); // Set initial theme
+            updateDisplay(); // Update stats display
+        };
+    </script>
+</body>
+</html>
+
