@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>راهنمای نصب وب اپلیکیشن زای تسک</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@33.003/misc/Farsi-Digits/Vazirmatn-FD-font-face.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <style>
+        /* Default (Light) Theme */
+        :root {
+            --color-bg-body: #f1f5f9; /* Light background - Kept neutral */
+            --color-text-body: #1a202c; /* Dark text - Kept neutral */
+            --color-bg-card: #ffffff; /* White card background - Kept neutral */
+            --color-border-card: #e2e8f0; /* Light border - Kept neutral */
+
+            /* New Theme Colors */
+            --theme-primary: #2563eb;
+            --theme-secondary: #1d4ed8;
+            --theme-accent-bg: #eff6ff;
+            --theme-accent-text: #1e3a8a;
+            --theme-progress-from: #2563eb;
+            --theme-progress-to: #1d4ed8;
+            --theme-input-border: #93c5fd;
+            --theme-input-focus-ring: #60a5fa;
+            --theme-orange-text: #ea580c;
+            --theme-orange-dark-text: #fdba74;
+            --theme-blue-motivation-icon: #2563eb;
+
+            /* Mapped existing variables to new theme colors */
+            --color-bg-header-from: var(--theme-primary);
+            --color-bg-header-to: var(--theme-secondary);
+            --color-text-header: #ffffff; /* White text for header - Kept neutral */
+            --color-text-steps: #4a5568; /* Gray text for steps - Kept neutral */
+            --color-text-steps-strong: #1a202c; /* Strong text in light mode - Kept neutral */
+            --color-text-browser-icon: var(--theme-primary); /* Browser icons */
+            --color-text-action-icon: var(--theme-blue-motivation-icon); /* Action icons */
+            --color-text-footer: #64748b; /* Footer text - Kept neutral */
+            --color-bg-hover-list-item: #e2e8f0; /* Light hover for list items - Kept neutral */
+            --color-border-list-item: #cbd5e0; /* Light border for list items - Kept neutral */
+            --color-bg-active-list-item: var(--theme-primary); /* Active blue for list items */
+            --color-text-active-list-item: #ffffff; /* White text for active list items - Kept neutral */
+        }
+
+        /* Dark Theme overrides */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --color-bg-body: #0f172a; /* Dark background - Kept neutral */
+                --color-text-body: #e2e8f0; /* Light text - Kept neutral */
+                --color-bg-card: #1e293b; /* Darker card background - Kept neutral */
+                --color-border-card: #475569; /* Darker border - Kept neutral */
+
+                /* Mapped existing variables to new theme colors for dark mode */
+                --color-bg-header-from: var(--theme-secondary); /* Darker blue for dark mode header start */
+                --color-bg-header-to: var(--theme-primary); /* Primary blue for dark mode header end */
+                --color-text-header: #e2e8f0; /* Light text for header - Kept neutral */
+                --color-text-steps: #cbd5e0; /* Lighter gray for steps - Kept neutral */
+                --color-text-steps-strong: #e2e8f0; /* Strong text in dark mode - Kept neutral */
+                --color-text-browser-icon: var(--theme-primary); /* Browser icons */
+                --color-text-action-icon: var(--theme-blue-motivation-icon); /* Action icons */
+                --color-text-footer: #94a3b8; /* Slate text for footer - Kept neutral */
+                --color-bg-hover-list-item: #2d3748; /* Darker hover for list items - Kept neutral */
+                --color-border-list-item: #4a5568; /* Darker border for list items - Kept neutral */
+                --color-bg-active-list-item: var(--theme-primary); /* Active blue for list items */
+                --color-text-active-list-item: #ffffff; /* White text for active list items - Kept neutral */
+            }
+        }
+
+        body {
+            font-family: 'Vazirmatn FD', sans-serif;
+            background-color: var(--color-bg-body);
+            color: var(--color-text-body);
+            transition: background-color 0.3s ease, color 0.3s ease; /* Transition for theme change */
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Header text color */
+        header p {
+            color: var(--color-text-steps); /* Use step text color for descriptive text */
+        }
+        /* Adjust h1 color for header */
+        header h1 {
+            color: var(--color-bg-header-from); /* Use the 'from' color for the main title */
+        }
+        @media (prefers-color-scheme: dark) {
+            header h1 {
+                color: var(--color-text-browser-icon); /* Use a lighter blue for dark mode main title */
+            }
+        }
+
+        /* Main browser display */
+        #main-browser-display {
+            background-image: linear-gradient(to right, var(--color-bg-header-from), var(--color-bg-header-to));
+            color: var(--color-text-header);
+            background-color: transparent; /* Ensure gradient takes precedence */
+            border-radius: 0.75rem; /* rounded-xl */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* shadow-lg */
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem; /* p-4 */
+            transition: all 0.3s ease; /* transition-all duration-300 */
+        }
+        #main-browser-display:hover {
+            background-image: linear-gradient(to right, var(--color-bg-header-to), var(--color-bg-header-from)); /* Reverse gradient on hover for effect */
+        }
+        #main-browser-icon {
+            color: var(--color-text-header); /* Icons in header should be white/light in both themes */
+        }
+
+        /* Collapsible content */
+        .collapsible-content {
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+            max-height: 0;
+            opacity: 0;
+            background-color: var(--color-bg-card);
+            border-radius: 0.75rem; /* rounded-xl */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* shadow-lg */
+        }
+        .collapsible-content.expanded {
+            opacity: 1;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+        }
+        .chevron-icon.rotated {
+            transform: rotate(180deg);
+        }
+
+        /* Main browser display when collapsible is expanded */
+        #main-browser-display.expanded-top {
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+
+        /* Other browsers buttons container */
+        #other-browsers-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            padding: 1rem; /* p-4 */
+        }
+        #other-browsers-buttons .browser-tab {
+            border-radius: 0; /* No rounded corners for list items */
+            justify-content: flex-start; /* Align content to start */
+            padding: 0.5rem 1rem; /* Further reduced padding */
+            background-color: transparent; /* No background */
+            border: none; /* No border */
+            border-bottom: 1px solid var(--color-border-list-item); /* Thin separator line */
+            box-shadow: none; /* Ensure no shadow */
+            width: 100%; /* w-full */
+            display: flex;
+            align-items: center;
+            gap: 0.5rem; /* gap-2 */
+            transition: all 0.3s ease; /* transition-all duration-300 */
+        }
+        /* Remove bottom border from the last item in the list */
+        #other-browsers-buttons .browser-tab:last-child {
+            border-bottom: none;
+        }
+        #other-browsers-buttons .browser-tab:hover {
+            background-color: var(--color-bg-hover-list-item); /* Subtle hover background */
+        }
+        #other-browsers-buttons .browser-tab.active {
+            background-color: var(--color-bg-active-list-item); /* Active blue */
+            color: var(--color-text-active-list-item);
+            border-color: transparent; /* No border for active state */
+            box-shadow: none; /* No shadow for active state in list */
+            transform: none; /* No translateY for list items */
+        }
+        #other-browsers-buttons .browser-tab i {
+            color: var(--color-text-browser-icon);
+            font-size: 1.25rem; /* text-xl */
+        }
+        #other-browsers-buttons .browser-tab span {
+            font-weight: 600; /* font-semibold */
+            color: var(--color-text-steps); /* Text in list items */
+        }
+        #other-browsers-buttons .browser-tab.active span {
+            color: var(--color-text-active-list-item); /* Text in active list item */
+        }
+
+
+        /* Instructions content */
+        #instructions-container {
+            background-color: var(--color-bg-card);
+            border-radius: 1rem; /* rounded-2xl */
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1); /* shadow-xl */
+            padding: 1.5rem 2rem; /* p-6 md:p-8 */
+            min-height: 300px;
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out; /* Increased duration */
+            opacity: 1; /* Default state */
+            transform: translateY(0); /* Default state */
+        }
+        #instructions-container ul {
+            list-style-type: none; /* Remove default decimal list style */
+            padding-right: 0; /* Remove default padding for ul */
+            margin-top: 1rem; /* mt-4 */
+            line-height: 1.6; /* leading-relaxed */
+            font-size: 1.125rem; /* text-lg */
+            color: var(--color-text-steps); /* text-slate-200 */
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem; /* space-y-3 */
+        }
+        #instructions-container ul li {
+            display: flex;
+            align-items: flex-start; /* Align icon and text at the top */
+            gap: 0.75rem; /* Space between icon and text */
+        }
+        #instructions-container ul li i {
+            flex-shrink: 0; /* Prevent icon from shrinking */
+            margin-top: 0.2rem; /* Adjust icon vertical alignment */
+            color: var(--color-text-action-icon); /* Blue-400 for action icons */
+            font-size: 1.25rem; /* text-xl */
+        }
+        #instructions-container ul li strong {
+            font-weight: bold;
+            color: var(--color-text-steps-strong); /* Strong tags in instructions */
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 2rem; /* mt-8 */
+            font-size: 1rem; /* text-base */
+            color: var(--color-text-footer); /* text-gray-500 */
+            user-select: none; /* select-none */
+        }
+        footer a {
+            display: block; /* Changed from inline-block to block */
+            width: 100%; /* Added to make it full width */
+            padding: 0.75rem 1.5rem; /* px-6 py-3 */
+            background-color: var(--color-bg-header-from); /* Uses theme primary/secondary */
+            color: var(--color-text-header);
+            font-weight: 600; /* font-semibold */
+            border-radius: 9999px; /* rounded-full */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* shadow-md */
+            transition: all 0.3s ease; /* transition-colors duration-300 */
+            text-decoration: none; /* no-underline */
+            font-size: 1.125rem; /* text-lg */
+        }
+        footer a:hover {
+            background-color: var(--color-bg-header-to); /* Uses theme primary/secondary */
+        }
+        @media (prefers-color-scheme: dark) {
+            footer a {
+                background-color: var(--color-bg-header-to); /* Darker blue for dark mode button */
+            }
+            footer a:hover {
+                background-color: var(--color-bg-header-from); /* Lighter blue on hover in dark mode */
+            }
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-center min-h-screen p-4 md:p-8">
+
+    <div class="w-full max-w-4xl mx-auto">
+        <header class="text-center mb-10">
+            <h1 class="text-4xl md:text-5xl font-extrabold mb-3">راهنمای نصب وب اپلیکیشن زای تسک</h1>
+            </header>
+
+        <nav class="mb-8">
+            <div id="main-browser-display">
+                <div id="main-browser-content" class="flex items-center gap-4">
+                    <i id="main-browser-icon" class="text-3xl"></i>
+                    <span id="main-browser-name" class="font-bold text-xl"></span>
+                </div>
+                <i id="main-browser-chevron" class="fas fa-chevron-down transition-transform duration-300 chevron-icon"></i>
+            </div>
+
+            <div id="other-browsers-list-container" class="collapsible-content">
+                <div id="other-browsers-buttons">
+                    </div>
+            </div>
+        </nav>
+
+        <main id="instructions-container">
+            </main>
+
+        <footer class="text-center mt-8">
+            <a href="javascript:history.back()" class="px-6 py-3 font-semibold rounded-full shadow-md transition-colors duration-300 text-lg no-underline">
+                بازگشت به برنامه
+            </a>
+        </footer>
+    </div>
+
+    <script>
+        // Global variable to keep track of the initially detected browser for priority
+        let userDetectedBrowserId;
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // Theme is now handled purely by CSS using @media (prefers-color-scheme: dark).
+            // No JavaScript for theme switching as per user request.
+
+            const allBrowsersData = [ // Full list of all browsers
+                { id: "chrome", name: "گوگل کروم", icon: "fab fa-chrome" },
+                { id: "firefox", name: "موزیلا فایرفاکس", icon: "fab fa-firefox-browser" },
+                { id: "safari", name: "سافاری (iOS)", icon: "fab fa-safari" },
+                { id: "edge", name: "مایکروسافت اج", icon: "fab fa-edge" },
+                { id: "opera", name: "اوپرا", icon: "fab fa-opera" },
+                { id: "brave", name: "بریو", icon: "fab fa-brave" },
+                { id: "samsung", name: "اینترنت سامسونگ", icon: "fa-solid fa-globe" },
+                { id: "vivaldi", name: "ویوالدی", icon: "fa-solid fa-v" }, // Changed to 'v'
+                { id: "yandex", name: "یاندکس", icon: "fa-solid fa-y" },    // Changed to 'y'
+                { id: "dolphin", name: "دلفین", icon: "fa-solid fa-fish" },  // Changed to 'fish'
+                { id: "puffin", name: "پافین", icon: "fa-solid fa-feather-alt" }, // Changed to 'feather-alt'
+                { id: "others", name: "مرورگرهای دیگر", icon: "fa-solid fa-question" } // Changed to 'question'
+            ];
+
+            // Instructions now contain objects with text and action-specific icon classes
+            // "وب‌سایت" has been replaced with "برنامه"
+            const instructions = {
+                chrome: [
+                    { text: "در گوشه بالا سمت راست برنامه، روی آیکون سه نقطه عمودی کلیک کنید.", icon: "fas fa-ellipsis-v" },
+                    { text: "گزینه <strong>Install app</strong> یا <strong>افزودن به صفحه اصلی</strong> را انتخاب کنید.", icon: "fas fa-plus-square" },
+                    { text: "روی <strong>Install</strong> ضربه بزنید تا برنامه اضافه شود.", icon: "fas fa-check-circle" }
+                ],
+                firefox: [
+                    { text: "روی آیکون منو (سه خط افقی) در بالا سمت راست کلیک کنید.", icon: "fas fa-bars" },
+                    { text: "گزینه <strong>Install</strong> یا <strong>افزودن به صفحه اصلی</strong> را انتخاب نمایید.", icon: "fas fa-plus-square" },
+                    { text: "تایید کنید تا برنامه اضافه شود.", icon: "fas fa-check-circle" }
+                ],
+                safari: [
+                    { text: "در <strong>نوار ابزار مرورگر</strong>، روی آیکون <strong>اشتراک‌گذاری</strong> ضربه بزنید.", icon: "fas fa-share-square" },
+                    { text: "گزینه <strong>Add to Home Screen</strong> یا <strong>افزودن به صفحه اصلی</strong> را انتخاب کنید.", icon: "fas fa-home" },
+                    { text: "در صفحه بعد، روی <strong>Add</strong> ضربه بزنید.", icon: "fas fa-plus" }
+                ],
+                edge: [
+                    { text: "در گوشه بالا سمت راست روی آیکون سه نقطه افقی کلیک کنید.", icon: "fas fa-ellipsis-h" },
+                    { text: "گزینه <strong>Apps</strong> را انتخاب کنید.", icon: "fas fa-th-large" }, // Apps icon
+                    { text: "روی <strong>Install this site as an app</strong> کلیک نمایید.", icon: "fas fa-plus-square" },
+                    { text: "روی <strong>Install</strong> ضربه بزنید تا برنامه نصب شود.", icon: "fas fa-check-circle" }
+                ],
+                opera: [
+                    { text: "برنامه را در مرورگر اوپرا باز کنید.", icon: "fas fa-globe" },
+                    { text: "روی آیکون <strong>سه نقطه</strong> (منو) در <strong>نوار ابزار مرورگر</strong> کلیک کنید.", icon: "fas fa-ellipsis-v" },
+                    { text: "گزینه <strong>Install app</strong> یا <strong>افزودن به صفحه اصلی</strong> را پیدا کرده و انتخاب کنید.", icon: "fas fa-plus-square" },
+                    { text: "نصب برنامه را تایید کنید.", icon: "fas fa-check-circle" }
+                ],
+                brave: [
+                    { text: "برنامه را در مرورگر بریو باز کنید.", icon: "fas fa-globe" },
+                    { text: "روی آیکون <strong>سه نقطه</strong> (منو) در گوشه بالا سمت راست کلیک کنید.", icon: "fas fa-ellipsis-v" },
+                    { text: "گزینه <strong>Install app</strong> یا <strong>افزودن به صفحه اصلی</strong> را انتخاب کنید.", icon: "fas fa-plus-square" },
+                    { text: "روی <strong>Install</strong> ضربه بزنید تا برنامه اضافه شود.", icon: "fas fa-check-circle" }
+                ],
+                samsung: [
+                    { text: "برنامه را در مرورگر اینترنت سامسونگ باز کنید.", icon: "fas fa-globe" },
+                    { text: "روی آیکون <strong>منو</strong> (سه خط افقی یا سه نقطه) در <strong>نوار ابزار مرورگر</strong> ضربه بزنید.", icon: "fas fa-bars" },
+                    { text: "گزینه <strong>افزودن صفحه به</strong> و سپس <strong>صفحه اصلی</strong> را انتخاب کنید.", icon: "fas fa-plus-square" },
+                    { text: "نصب را تایید کنید.", icon: "fas fa-check-circle" }
+                ],
+                vivaldi: [
+                    { text: "برنامه را در مرورگر ویوالدی باز کنید.", icon: "fas fa-globe" },
+                    { text: "روی آیکون <strong>Vivaldi</strong> (حرف V) در گوشه بالا سمت چپ یا آیکون <strong>سه نقطه</strong> در <strong>نوار ابزار مرورگر</strong> کلیک کنید.", icon: "fas fa-ellipsis-v" },
+                    { text: "گزینه <strong>Install [نام سایت]</strong> یا <strong>ایجاد میانبر برنامه</strong> را انتخاب کنید.", icon: "fas fa-plus-square" },
+                    { text: "نصب برنامه را تایید کنید.", icon: "fas fa-check-circle" }
+                ],
+                yandex: [
+                    { text: "برنامه را در مرورگر یاندکس باز کنید.", icon: "fas fa-globe" },
+                    { text: "روی آیکون <strong>منو</strong> (سه نقطه) در <strong>نوار ابزار مرورگر</strong> ضربه بزنید.", icon: "fas fa-ellipsis-v" },
+                    { text: "گزینه <strong>افزودن به صفحه اصلی</strong> را انتخاب کنید.", icon: "fas fa-plus-square" },
+                    { text: "نصب را تایید کنید.", icon: "fas fa-check-circle" }
+                ],
+                dolphin: [
+                    { text: "برنامه را در مرورگر دلفین باز کنید.", icon: "fas fa-globe" },
+                    { text: "روی آیکون <strong>منو</strong> (آیکون دلفین یا سه نقطه) در <strong>نوار ابزار مرورگر</strong> ضربه بزنید.", icon: "fas fa-bars" },
+                    { text: "گزینه <strong>افزودن به صفحه اصلی</strong> را انتخاب کنید.", icon: "fas fa-plus-square" },
+                    { text: "نصب را تایید کنید.", icon: "fas fa-check-circle" }
+                ],
+                puffin: [
+                    { text: "برنامه را در مرورگر پافین باز کنید.", icon: "fas fa-globe" },
+                    { text: "روی آیکون <strong>منو</strong> (سه نقطه) در <strong>نوار ابزار مرورگر</strong> ضربه بزنید.", icon: "fas fa-ellipsis-v" },
+                    { text: "گزینه <strong>افزودن به صفحه اصلی</strong> را انتخاب کنید.", icon: "fas fa-plus-square" },
+                    { text: "نصب را تایید کنید.", icon: "fas fa-check-circle" }
+                ],
+                others: [
+                    { text: "<strong>به دنبال آیکون \"نصب\" بگردید:</strong> بسیاری از مرورگرها آیکونی شبیه به خانه با علامت مثبت، فلش رو به پایین، یا دکمه \"Install\" در نوار آدرس یا منوی اصلی خود دارند.", icon: "fas fa-search" },
+                    { text: "<strong>منوی مرورگر را بررسی کنید:</strong> روی آیکون منو (معمولاً سه نقطه یا سه خط) کلیک کنید و به دنبال گزینه‌هایی مانند \"Install app\"، \"Add to Home Screen\"، یا \"افزودن به صفحه اصلی\" بگردید.", icon: "fas fa-bars" },
+                    { text: "<strong>دستورالعمل‌ها را جستجو کنید:</strong> اگر همچنان گزینه‌ای پیدا نکردید، نام مرورگر خود را به همراه عبارت \"install PWA\" در اینترنت جستجو کنید.", icon: "fas fa-globe" }
+                ]
+            };
+
+            const mainBrowserDisplay = document.getElementById('main-browser-display');
+            const mainBrowserContentDiv = document.getElementById('main-browser-content');
+            const mainBrowserIcon = document.getElementById('main-browser-icon');
+            const mainBrowserName = document.getElementById('main-browser-name');
+            const mainBrowserChevron = document.getElementById('main-browser-chevron');
+            const otherBrowsersListContainer = document.getElementById('other-browsers-list-container');
+            const otherBrowsersButtonsDiv = document.getElementById('other-browsers-buttons');
+            const instructionsContainer = document.getElementById('instructions-container');
+
+            // Function to detect user's browser
+            function detectBrowser() {
+                const userAgent = navigator.userAgent;
+                if (userAgent.includes("Chrome") && !userAgent.includes("Edg")) {
+                    return "chrome";
+                } else if (userAgent.includes("Firefox")) {
+                    return "firefox";
+                } else if (userAgent.includes("Safari") && !userAgent.includes("Chrome")) {
+                    return "safari";
+                } else if (userAgent.includes("Edg")) {
+                    return "edge";
+                } else if (userAgent.includes("Opera") || userAgent.includes("OPR")) {
+                    return "opera";
+                } else if (userAgent.includes("Brave")) {
+                    return "brave";
+                } else if (userAgent.includes("SamsungBrowser")) {
+                    return "samsung";
+                }
+                return "others";
+            }
+
+            // Define a custom popularity order for sorting
+            const popularityOrder = [
+                "chrome", "firefox", "edge", "safari", "opera", "brave", "samsung",
+                "vivaldi", "yandex", "dolphin", "puffin"
+            ];
+
+            // Function to rebuild the list of other browsers
+            function rebuildOtherBrowsersList(currentMainBrowserId) {
+                otherBrowsersButtonsDiv.innerHTML = ''; // Clear existing buttons
+                let browsersForList = [];
+
+                allBrowsersData.forEach(browser => {
+                    if (browser.id !== currentMainBrowserId) {
+                        browsersForList.push(browser);
+                    }
+                });
+
+                browsersForList.sort((a, b) => {
+                    // 'others' always at the very end
+                    if (a.id === 'others') return 1;
+                    if (b.id === 'others') return -1;
+
+                    // User's detected browser (if not currentMainBrowserId) comes first among others
+                    if (a.id === userDetectedBrowserId && b.id !== userDetectedBrowserId) return -1;
+                    if (b.id === userDetectedBrowserId && a.id !== userDetectedBrowserId) return 1;
+
+                    // Sort by predefined popularity order
+                    const aPopularityIndex = popularityOrder.indexOf(a.id);
+                    const bPopularityIndex = popularityOrder.indexOf(b.id);
+
+                    if (aPopularityIndex !== -1 && bPopularityIndex !== -1) {
+                        return aPopularityIndex - bPopularityIndex;
+                    }
+                    // If one is in popularity list and other is not, the one in list comes first
+                    if (aPopularityIndex !== -1) return -1;
+                    if (bPopularityIndex !== -1) return 1;
+
+                    // Fallback to alphabetical sort for those not in popularity list
+                    return a.name.localeCompare(b.name, 'fa');
+                });
+
+                browsersForList.forEach(browser => {
+                    const button = document.createElement('button');
+                    button.dataset.browser = browser.id;
+                    button.className = 'browser-tab w-full flex items-center gap-2 px-4 py-2 transition-all duration-300 hover:bg-slate-700';
+                    button.innerHTML = `<i class="${browser.icon} text-xl"></i><span class="font-semibold">${browser.name}</span>`;
+                    otherBrowsersButtonsDiv.appendChild(button);
+
+                    button.addEventListener('click', () => {
+                        toggleCollapsible(false);
+                        setTimeout(() => {
+                            selectBrowserAndDisplayContent(browser.id);
+                        }, 300);
+                    });
+                });
+            }
+
+            // Function to update the main browser display with animation
+            function updateMainBrowserDisplay(browserData) {
+                if (mainBrowserContentDiv.classList.contains('animating')) {
+                    clearTimeout(mainBrowserContentDiv.animationTimeout);
+                    mainBrowserContentDiv.classList.remove('animating');
+                    mainBrowserContentDiv.style.opacity = '1';
+                    mainBrowserContentDiv.style.transform = 'translateY(0)';
+                }
+
+                mainBrowserContentDiv.classList.add('animating');
+                mainBrowserContentDiv.style.opacity = '0';
+                mainBrowserContentDiv.style.transform = 'translateY(10px)';
+
+                mainBrowserContentDiv.animationTimeout = setTimeout(() => {
+                    mainBrowserIcon.className = browserData.icon + ' text-3xl';
+                    mainBrowserName.textContent = browserData.name;
+                    mainBrowserContentDiv.style.opacity = '1';
+                    mainBrowserContentDiv.style.transform = 'translateY(0)';
+                    mainBrowserContentDiv.classList.remove('animating');
+                }, 300);
+            }
+
+            // Function to update the main instructions content with animation and per-line icons
+            function updateInstructionsContent(browserId) {
+                if (instructionsContainer.classList.contains('animating')) {
+                    clearTimeout(instructionsContainer.animationTimeout);
+                    instructionsContainer.classList.remove('animating');
+                    instructionsContainer.style.opacity = '1';
+                    instructionsContainer.style.transform = 'translateY(0)';
+                }
+                instructionsContainer.classList.add('animating');
+
+                instructionsContainer.style.opacity = '0';
+                instructionsContainer.style.transform = 'translateY(10px)';
+
+                instructionsContainer.animationTimeout = setTimeout(() => {
+                    const steps = instructions[browserId];
+
+                    let ulHtml = '<ul class="space-y-3 text-lg mt-4">';
+                    steps.forEach(step => {
+                        ulHtml += `
+                            <li>
+                                <i class="${step.icon} text-xl"></i> <span>${step.text}</span>
+                            </li>
+                        `;
+                    });
+                    ulHtml += '</ul>';
+
+                    instructionsContainer.innerHTML = ulHtml; // Only ul, no h2
+                    instructionsContainer.style.opacity = '1';
+                    instructionsContainer.style.transform = 'translateY(0)';
+                    instructionsContainer.classList.remove('animating');
+                }, 300);
+            }
+
+            // Function to select a browser, update display, and show instructions
+            function selectBrowserAndDisplayContent(browserId) {
+                const newSelectedBrowser = allBrowsersData.find(b => b.id === browserId);
+                if (!newSelectedBrowser) return;
+
+                updateMainBrowserDisplay(newSelectedBrowser);
+                mainBrowserDisplay.dataset.browser = newSelectedBrowser.id;
+
+                rebuildOtherBrowsersList(newSelectedBrowser.id);
+
+                updateInstructionsContent(browserId);
+
+                // Update active state for buttons in the collapsible list
+                document.querySelectorAll('#other-browsers-buttons .browser-tab').forEach(btn => {
+                    if (btn.dataset.browser === browserId) {
+                        btn.classList.add('active');
+                    } else {
+                        btn.classList.remove('active');
+                    }
+                });
+            }
+
+            // Function to toggle the collapsible list
+            function toggleCollapsible(expand = null) {
+                const isExpanded = otherBrowsersListContainer.classList.contains('expanded');
+
+                if (expand === true || (expand === null && !isExpanded)) {
+                    otherBrowsersListContainer.style.maxHeight = otherBrowsersButtonsDiv.scrollHeight + 30 + 'px';
+                    otherBrowsersListContainer.classList.add('expanded');
+                    mainBrowserChevron.classList.add('rotated');
+                    mainBrowserDisplay.classList.add('expanded-top');
+                } else if (expand === false || (expand === null && isExpanded)) {
+                    otherBrowsersListContainer.style.maxHeight = '0';
+                    otherBrowsersListContainer.classList.remove('expanded');
+                    mainBrowserChevron.classList.remove('rotated');
+                    mainBrowserDisplay.classList.remove('expanded-top');
+                }
+            }
+
+            // Add click listener to the main browser display
+            mainBrowserDisplay.addEventListener('click', () => {
+                toggleCollapsible();
+            });
+
+            // Initial setup
+            userDetectedBrowserId = detectBrowser();
+            selectBrowserAndDisplayContent(userDetectedBrowserId);
+        });
+    </script>
+</body>
+</html>
